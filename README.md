@@ -1,2 +1,2 @@
 # enigma2_plugin_http_dispatch_youtube
-Enigma2 plugin to pass a YouTube video-id over HTTP to your receiver for playback.
+Enigma2 plugin to pass a YouTube video-id over HTTP to your receiver for playback. Requires the YouTube plugin (git1296) and exteplayer3 (181+git143) to be installed. Install in a folder under the "/usr/lib/enigma2/python/Plugins/Extensions/" parent. Should appear, after restart, at the plugin menu and react to a HTTP requests like; curl -X POST http://your_receiver:8765/ytb -H "Content-Type: application/json" -d '{"video_id":"Z9Jh7xXMFwA"}'
