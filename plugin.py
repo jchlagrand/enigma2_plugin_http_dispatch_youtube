@@ -27,22 +27,21 @@ class thisPlugin(resource.Resource):
                 b"application/json; charset=utf-8"
             )
             jsn = {
-                "status": "ok",
                 "endpoint": request.path.decode("utf-8","replace")
             }
             jsn.update(data)
             if jsn.get("endpoint") == "/ytb":
                 vid = data.get("video_id","-")
                 if re.match(r"^[A-Za-z0-9_-]{11}$", vid):
-                    vid_ok = True
                     if _plugin_session is None:
-                        jsn.update({"message": "Geen Enigma2-session beschikbaar."})
+                        jsn.update({"status": "error","message": "Geen Enigma2-session beschikbaar."})
                     else:
-                        jsn.update({"message": "YouTube wordt gestart."})
+                        vid_ok = True
+                        jsn.update({"status": "success","message": "YouTube wordt gestart."})
                 else:
-                    jsn.update({"message": "Geen valide aanroep."})
+                    jsn.update({"status": "error","message": "Geen valide aanroep."})
             else:
-                jsn.update({"message": "Aanvraag wordt (nog) niet ondersteund."})
+                jsn.update({"status": "error","message": "Aanvraag wordt (nog) niet ondersteund."})
             request.write(json.dumps(jsn).encode("utf-8"))
             request.finish()
             if _plugin_session is not None and vid_ok:
@@ -60,10 +59,7 @@ class thisPlugin(resource.Resource):
                 b"Content-Type",
                 b"application/json; charset=utf-8"
             )
-            return json.dumps({
-                "status": "error",
-                "message": str(error)
-            }).encode("utf-8")
+            return json.dumps({"status": "error","message": str(error)}).encode("utf-8")
             
 def log(message):
     try:
